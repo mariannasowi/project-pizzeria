@@ -90,7 +90,9 @@ class Product{
     thisProduct.formInputs = thisProduct.form.querySelectorAll(select.all.formInputs);
     thisProduct.cartButton = thisProduct.element.querySelector(select.menuProduct.cartButton);
     thisProduct.priceElem = thisProduct.element.querySelector(select.menuProduct.priceElem);
+    thisProduct.imageWrapper = thisProduct.element.querySelector(select.menuProduct.imageWrapper);
   }
+
 
   initAccordion(){
     const thisProduct = this;
@@ -154,11 +156,9 @@ class Product{
 
     /* read all data from the form (using utils.serializeFormToObject) and save it to const formData */
     const formData = utils.serializeFormToObject(thisProduct.form);
-    console.log('formData', formData);
 
     /* set variable price to equal thisProduct.data.price */
     let price = thisProduct.data.price;
-    console.log('price', price);
 
     /* START LOOP: for each PARAM */
     for (let paramId in thisProduct.data.params) {
@@ -181,12 +181,27 @@ class Product{
           
           /* END: IF option is checked && !=default and START: ELSE IF option is NOT checked && =default */
         } else if (!optionSelected && option.default){
-          
+
           /* -price */
           price -= option.price;
-          
+
           /* END: ELSE IF option is NOT checked && =default */
         }
+
+        /* wszystkie elementy wyszukane w thisProduct.imageWrapper */
+          const optionImages = thisProduct.imageWrapper.querySelectorAll('.' + paramId + '-' + optionId);
+          
+          /* START: IF image */
+          if (optionSelected) {
+            for (let optionImage of optionImages) {
+              optionImage.classList.add(classNames.menuProduct.imageVisible);
+            }
+          } else {
+            for (let optionImage of optionImages) {
+              optionImage.classList.remove(classNames.menuProduct.imageVisible);
+            }
+          /* END LOOP: image */
+          }
         
         /* END LOOP: for each OPTION */
       }
