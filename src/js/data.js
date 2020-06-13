@@ -111,5 +111,5 @@ dataSource.products = {
       },
     },
   },
-
+  
 };
