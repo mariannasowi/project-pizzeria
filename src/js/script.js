@@ -223,7 +223,7 @@
       /* muliply price by amount */
       price *= thisProduct.amountWidget.value;
 
-    thisProduct.priceElem.innerHTML = price;
+      thisProduct.priceElem.innerHTML = price;
     }
   }
 
