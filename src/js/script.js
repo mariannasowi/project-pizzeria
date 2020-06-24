@@ -208,8 +208,9 @@
       const formData = utils.serializeFormToObject(thisProduct.form);
 
       /* set variable price to equal thisProduct.data.price */
-      thisProduct.params = {};
       let price = thisProduct.data.price;
+      thisProduct.params = {};
+      
 
       /* START LOOP: for each PARAM */
       for (let paramId in thisProduct.data.params) {
@@ -269,8 +270,8 @@
       }
 
       /* multiply price by amount */
-      thisProduct.priceSingle = price;
       thisProduct.price = thisProduct.priceSingle * thisProduct.amountWidget.value;
+      thisProduct.priceSingle = price;
 
       /* set the contents of thisProduct.priceElem to be the value of variable price */
       thisProduct.priceElem.innerHTML = thisProduct.price;
@@ -348,6 +349,7 @@
       const thisCart = this;
 
       thisCart.products = [];
+      thisCart.deliveryFee = settings.cart.defaultDeliveryFee;
       thisCart.getElements(element);
       thisCart.initActions();
     }
@@ -363,7 +365,7 @@
       thisCart.renderTotalsKeys = ['totalNumber', 'totalPrice', 'subtotalPrice', 'deliveryFee'];
 
       for(let key of thisCart.renderTotalsKeys){
-      thisCart.dom[key] = thisCart.dom.wrapper.querySelectorAll(select.cart[key]);
+        thisCart.dom[key] = thisCart.dom.wrapper.querySelectorAll(select.cart[key]);
       }
     }
 
@@ -413,9 +415,6 @@
       } else {
         thisCart.totalPrice = 0;
       }
-      console.log('totalNumber', thisCart.totalNumber);
-      console.log('subtotalPrice', thisCart.subtotalPrice);
-      console.log('totalPrice', thisCart.totalPrice);
 
       for (let key of thisCart.renderTotalsKeys){
         for (let elem of thisCart.dom[key]){
@@ -424,7 +423,7 @@
       }
     }
 
-    remove(cartProduct) {
+    remove(cartProduct){
       const thisCart = this;
       const index = thisCart.products.indexOf(cartProduct);
 
