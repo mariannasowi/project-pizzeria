@@ -3,7 +3,7 @@
 {
   'use strict';
 
-    const select = {
+  const select = {
     templateOf: {
       menuProduct: '#template-menu-product',
       cartProduct: '#template-cart-product',
@@ -269,15 +269,6 @@
       thisProduct.priceElem.innerHTML = thisProduct.price;
     }
 
-    initAmountWidget(){
-      const thisProduct = this;
-      thisProduct.amountWidget = new AmountWidget(thisProduct.amountWidgetElem);
-      
-      thisProduct.amountWidgetElem.addEventListener('updated', function(){
-        thisProduct.processOrder();
-      });
-    }
-
     addToCart(){
       const thisProduct = this;
 
@@ -391,7 +382,7 @@
   
       const generatedHTML = templates.cartProduct(menuProduct);
       const generatedDOM = utils.createDOMFromHTML(generatedHTML);
-      const cartContainer = thisCart.dom.productList;
+      //const cartContainer = thisCart.dom.productList;
       
       thisCart.dom.productList.appendChild(generatedDOM);
       
