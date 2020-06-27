@@ -352,7 +352,10 @@
       thisCart.dom.wrapper = element;
       thisCart.dom.toggleTrigger = thisCart.dom.wrapper.querySelector(select.cart.toggleTrigger);
       thisCart.dom.productList = document.querySelector(select.cart.productList);
-    
+      thisCart.dom.form = thisCart.dom.wrapper.querySelector(select.cart.form);
+      thisCart.dom.phone = thisCart.dom.wrapper.querySelector(select.cart.phone);
+      thisCart.dom.address = thisCart.dom.wrapper.querySelector(select.cart.address);
+
       thisCart.renderTotalsKeys = ['totalNumber', 'totalPrice', 'subtotalPrice', 'deliveryFee'];
 
       for(let key of thisCart.renderTotalsKeys){
@@ -375,16 +378,21 @@
       thisCart.dom.productList.addEventListener('remove', function (){
         thisCart.remove(event.detail.cartProduct);
       });
-    }  
+
+      thisCart.dom.form.addEventListener('submit', function (event){
+        event.preventDefault();
+        thisCart.sendOrder();
+      });
+    }
 
     add(menuProduct){
       const thisCart = this;
   
       const generatedHTML = templates.cartProduct(menuProduct);
       const generatedDOM = utils.createDOMFromHTML(generatedHTML);
-      //const cartContainer = thisCart.dom.productList;
       
-      thisCart.dom.productList.appendChild(generatedDOM);
+      const cartContainer = thisCart.dom.productList;
+      cartContainer.appendChild(generatedDOM);
       
       thisCart.products.push (new CartProduct(menuProduct, generatedDOM));
       thisCart.update();
@@ -419,6 +427,39 @@
       thisCart.products.splice(index, 1);
       cartProduct.dom.wrapper.remove();
       thisCart.update();
+    }
+
+    sendOrder(){
+      const thisCart = this;
+      const url = settings.db.url + '/' + settings.db.order;
+
+      const payload = {
+        address: thisCart.dom.address.value,
+        phone: thisCart.dom.phone.value,
+        totalNumber: thisCart.totalNumber,
+        subtotalPrice: thisCart.subtotalPrice,
+        deliveryFee: thisCart.deliveryFee,
+        totalPrice: thisCart.totalPrice,
+        products: [],
+      };
+      for (let cartProd of thisCart.products) {
+        payload.products.push(cartProd.getData());
+      }
+
+      const options = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      };
+
+      fetch(url, options)
+        .then(function (response) {
+          return response.json();
+        }).then(function (parsedResponse) {
+          console.log('parsedResponse', parsedResponse);
+        });
     }
   }
 
@@ -484,6 +525,19 @@
         thisCartProduct.remove();
       });
     }
+
+    getData() {
+      const thisCartProduct = this;
+
+      const productData = {
+        id: thisCartProduct.id,
+        amount: thisCartProduct.amount,
+        price: thisCartProduct.price,
+        priceSingle: thisCartProduct.priceSingle,
+        params: thisCartProduct.params,
+      };
+      return productData;
+    }
   }
 
   const app = {
@@ -491,8 +545,7 @@
       const thisApp = this;
       
       for(let productData in thisApp.data.products){
-        new Product(thisApp.data.products[productData].id, thisApp.data.products[productData]);
-      }
+        new Product(thisApp.data.products[productData].id, thisApp.data.products[productData]);      }
     },
 
     init: function(){
@@ -500,12 +553,28 @@
 
       thisApp.initData();
       thisApp.initCart();
-      thisApp.initMenu();
     },
 
     initData: function(){
       const thisApp = this;
-      thisApp.data = dataSource;
+      thisApp.data = {};
+
+      const url = settings.db.url + '/' + settings.db.product;
+
+      fetch(url)
+        .then(function(rawResponse){
+          return rawResponse.json();
+        })
+        .then(function(parsedResponse){
+          console.log('parsedResponse', parsedResponse);
+
+          /* save parsedResponse as thisApp.data.products */
+          thisApp.data.products = parsedResponse;
+
+          /* execute initMenu method */
+          thisApp.initMenu();
+        });
+      console.log('thisApp.data', JSON.stringify(thisApp.data));
     },
 
     initCart: function(){
