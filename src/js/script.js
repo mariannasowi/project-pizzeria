@@ -329,7 +329,7 @@
     announce() {
       const thisWidget = this;
       const event = new CustomEvent('updated',{
-        buubles: true
+        bubbles: true
       });
       thisWidget.element.dispatchEvent(event);
     }
