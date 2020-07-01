@@ -3,40 +3,40 @@ import {utils} from '../utils.js';
 import AmountWidget from './AmountWidget.js';
   
 class Booking{
-  constructor(Booking){
+  constructor(bookingConfig){
     const thisBooking = this;
       
-    thisBooking.render(Booking);
+    thisBooking.render(bookingConfig);
     thisBooking.initWidgets();
-    console.log('thisBooking', thisBooking);
-    }
+  }
 
-    render(Booking){
-      const thisBooking = this;
+  render(bookingConfig){
+    const thisBooking = this;
 
-      /* generate HTML based on template */
-      const generatedHTML = templates.bookingWidget();
+    /* generate HTML based on template */
+    const generatedHTML = templates.bookingWidget();
 
-      /* generate object */
-      thisBooking.dom = {};
+    /* generate object */
+    thisBooking.dom = {};
 
-      thisBooking.dom.wrapper = Booking;
+    thisBooking.dom.wrapper = bookingConfig;
 
-      /* create element generatedDOM */
-      const generatedDOM = utils.createDOMFromHTML(generatedHTML);
-      
-      /* add element to thisBooking.dom.wrapper */
-      thisBooking.dom.wrapper.appendChild(generatedDOM);
-      thisBooking.dom.peopleAmount = thisBooking.dom.wrapper.querySelector(select.booking.peopleAmount);
+    /* create element generatedDOM */
+    const generatedDOM = utils.createDOMFromHTML(generatedHTML);
 
-      thisBooking.dom.hoursAmount = thisBooking.dom.wrapper.querySelector(select.booking.hoursAmount);
-    }
+    /* add element to thisBooking.dom.wrapper */
+    thisBooking.dom.wrapper.appendChild(generatedDOM);
+    thisBooking.dom.peopleAmount = thisBooking.dom.wrapper.querySelector(select.booking.peopleAmount);
 
-    initWidgets(){
-      const thisBooking = this;
+    thisBooking.dom.hoursAmount = thisBooking.dom.wrapper.querySelector(select.booking.hoursAmount);
+  }
 
-      thisBooking.peopleAmount = new AmountWidget(thisBooking.dom.peopleAmount);
-      thisBooking.hoursAmount = new AmountWidget(thisBooking.dom.hoursAmount);
-    }
+  initWidgets(){
+    const thisBooking = this;
+
+    thisBooking.peopleAmount = new AmountWidget(thisBooking.dom.peopleAmount);
+    thisBooking.hoursAmount = new AmountWidget(thisBooking.dom.hoursAmount);
+  }
 }
+
 export default Booking;
