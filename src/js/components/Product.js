@@ -61,7 +61,7 @@ class Product{
     const triggerClick = thisProduct.accordionTrigger;
 
     /* START: click event listener to trigger */
-    triggerClick.addEventListener('click', function (event){
+    triggerClick.addEventListener('click', function(event){
 
       /* prevent default action for event */
       event.preventDefault();
@@ -123,7 +123,7 @@ class Product{
     thisProduct.params = {};      
 
     /* START LOOP: for each PARAM */
-    for (let paramId in thisProduct.data.params) {
+    for (let paramId in thisProduct.data.params){
 
       /*save the element in thisProduct.data.params with key paramId as const param */
       const param = thisProduct.data.params[paramId];

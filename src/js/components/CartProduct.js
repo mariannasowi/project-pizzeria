@@ -55,16 +55,16 @@ class CartProduct{
   initActions(){
     const thisCartProduct = this;
 
-    thisCartProduct.dom.edit.addEventListener('click', function (event){
+    thisCartProduct.dom.edit.addEventListener('click', function(event){
       event.preventDefault();
     });
-    thisCartProduct.dom.remove.addEventListener('click', function (event){
+    thisCartProduct.dom.remove.addEventListener('click', function(event){
       event.preventDefault();
       thisCartProduct.remove();
     });
   }
 
-  getData() {
+  getData(){
     const thisCartProduct = this;
 
     const productData = {

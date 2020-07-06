@@ -15,7 +15,7 @@ class HourPicker extends BaseWidget{
     
     thisWidget.initPlugin();
 
-    thisWidget.value = thisWidget.dom.input;
+    thisWidget.value = thisWidget.dom.input.value;
 
     thisWidget.renderValue();
   }
@@ -26,7 +26,7 @@ class HourPicker extends BaseWidget{
     rangeSlider.create(thisWidget.dom.input);
 
     thisWidget.dom.input.addEventListener('input', function(){
-      thisWidget.value = thisWidget.dom.input;
+      thisWidget.value = thisWidget.dom.input.value;
     });
   }
 
