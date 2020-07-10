@@ -41,7 +41,6 @@ export const select = {
       output: '.output',
     },
   },
-  
   cart: {
     productList: '.cart__order-summary',
     toggleTrigger: '.cart__summary',
