@@ -1,4 +1,4 @@
-import {select, templates, settings} from '../settings.js';
+import {select, templates, settings, classNames} from '../settings.js';
 import {utils} from '../utils.js';
 import AmountWidget from './AmountWidget.js';
 import DatePicker from './DatePicker.js';
@@ -11,6 +11,7 @@ class Booking{
     thisBooking.render(bookingConfig);
     thisBooking.initWidgets();
     thisBooking.getData();
+    //thisBooking.selectTable();
   }
 
   getData(){
@@ -35,8 +36,6 @@ class Booking{
       ],
     };
 
-    //console.log('getData params', params);
-
     const urls = {
       booking:       settings.db.url + '/' + settings.db.booking 
                                      + '?' + params.booking.join('&'),
@@ -45,8 +44,6 @@ class Booking{
       eventsRepeat:  settings.db.url + '/' + settings.db.event   
                                      + '?' + params.eventsRepeat.join('&'),
     };
-
-    //console.log('getData urls', urls);
 
     Promise.all([
       fetch(urls.booking),
@@ -64,9 +61,6 @@ class Booking{
         ]);
       })
       .then(function([bookings, eventsCurrent, eventsRepeat]){
-        console.log(bookings);
-        console.log(eventsCurrent);
-        console.log(eventsRepeat);
         thisBooking.parseData(bookings, eventsCurrent, eventsRepeat);
       });
   }
@@ -94,7 +88,6 @@ class Booking{
         }
       }
     }
-    console.log('thisBooking.booked',thisBooking.booked);
     thisBooking.updateDOM();
   }
 
@@ -107,15 +100,102 @@ class Booking{
 
     const startHour = utils.hourToNumber(hour);
 
-    if(typeof thisBooking.booked[date][startHour] == 'undefined'){
-      thisBooking.booked[date][startHour] = [];
+    for(let hourBlock = startHour; hourBlock < startHour + duration;  hourBlock += 0.5){
+
+      if(typeof thisBooking.booked[date][hourBlock] == 'undefined'){
+        thisBooking.booked[date][hourBlock] = [];
+      }
+
+      thisBooking.booked[date][hourBlock].push(table);
+    }
+  }
+
+  updateDOM(){
+    const thisBooking = this;
+
+    thisBooking.date = thisBooking.datePicker.value;
+    thisBooking.hour =  utils.hourToNumber(thisBooking.hourPicker.value);
+
+    let allAvailable = false;
+
+    if(
+      typeof thisBooking.booked[thisBooking.date] == 'undefined'
+      ||
+      typeof thisBooking.booked[thisBooking.date][thisBooking.hour] == 'undefined'
+    ){
+      allAvailable = true;
     }
 
-    thisBooking.booked[date][startHour].push(table);
+    for(let table of thisBooking.dom.tables){
+      let tableId = table.getAttribute(settings.booking.tableIdAttribute);
+      if(!isNaN(tableId)){
+        tableId = parseInt(tableId);
+      }
 
-    for(let index = 0; index < 3; index++){
-      console.log('loop', index);
+      if(
+        !allAvailable
+        &&
+        thisBooking.booked[thisBooking.date][thisBooking.hour].includes(tableId) > -1
+      ){
+        table.classList.add(classNames.booking.tableBooked);
+      } else {
+        table.classList.remove(classNames.booking.tableBooked);
+      }
     }
+  }
+
+  selectTable(){
+    const thisBooking = this;
+
+    for (let table of thisBooking.dom.tables){
+      table.addEventListener('click', function(){
+        table.classList.add(classNames.booking.tableBooked);
+        
+        let tableSelectedId = parseInt(table.getAttribute(settings.booking.tableIdAttribute));
+        console.log('tableSelected', tableSelectedId);
+
+        thisBooking.tableSelected = tableSelectedId;
+      });
+    }
+  }
+
+  sendReservation(){
+    const thisBooking = this;
+    const url = settings.db.url + '/' + settings.db.booking;
+
+    const payload = {
+      date: thisBooking.datePicker.value,
+      hour: thisBooking.hourPicker.value,
+      table: thisBooking.tableSelected,
+      duration: thisBooking.hoursAmount.value,
+      ppl: thisBooking.peopleAmount.value,
+      starters: [],
+      phone: thisBooking.dom.phone.value,
+      address: thisBooking.dom.address.value,
+    };
+    console.log('payload', payload);
+
+    for (let starter of thisBooking.dom.starters){
+      if (starter.checked === true){
+        payload.starters.push(starter.value);
+      }
+    }
+
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    };
+
+    fetch(url, options)
+      .then(function (response){
+        return response.json();
+      }).then(function (parsedResponse){
+        console.log('parsedResponse', parsedResponse);
+        thisBooking.getData();
+      });
   }
 
   render(bookingConfig){
@@ -139,6 +219,11 @@ class Booking{
     thisBooking.dom.hoursAmount = thisBooking.dom.wrapper.querySelector(select.booking.hoursAmount);
     thisBooking.dom.datePicker = thisBooking.dom.wrapper.querySelector(select.widgets.datePicker.wrapper);
     thisBooking.dom.hourPicker = thisBooking.dom.wrapper.querySelector(select.widgets.hourPicker.wrapper);
+    thisBooking.dom.tables = thisBooking.dom.wrapper.querySelector(select.booking.tables);
+    thisBooking.dom.phone = thisBooking.dom.wrapper.querySelector(select.booking.bookingPhone);
+    thisBooking.dom.address = thisBooking.dom.wrapper.querySelector(select.booking.bookingAddress);
+    thisBooking.dom.starters = thisBooking.dom.wrapper.querySelectorAll(select.booking.starters);
+    thisBooking.dom.form = thisBooking.dom.wrapper.querySelector(select.booking.bookingForm);
   }
 
   initWidgets(){
@@ -146,8 +231,22 @@ class Booking{
 
     thisBooking.peopleAmount = new AmountWidget(thisBooking.dom.peopleAmount);
     thisBooking.hoursAmount = new AmountWidget(thisBooking.dom.hoursAmount);
+
     thisBooking.datePicker = new DatePicker(thisBooking.dom.datePicker);
     thisBooking.hourPicker = new HourPicker(thisBooking.dom.hourPicker);
+
+    thisBooking.dom.datePicker.addEventListener('updated', function(){
+      thisBooking.updateDOM();
+    });
+
+    thisBooking.dom.hourPicker.addEventListener('updated', function(){
+      thisBooking.updateDOM();
+    });
+
+    thisBooking.dom.form.addEventListener('submit', function(event){
+      event.preventDefault();
+      thisBooking.sendReservation();
+    });
   }
 }
 
