@@ -54,11 +54,11 @@ class Booking{
       fetch(urls.eventsRepeat),
     ])
       .then(function(allResponses){
-        const bookingResponse = allResponses[0];
+        const bookingsResponse = allResponses[0];
         const eventsCurrentResponse = allResponses[1];
         const eventsRepeatResponse = allResponses[2];
         return Promise.all([
-          bookingResponse.json(),
+          bookingsResponse.json(),
           eventsCurrentResponse.json(),
           eventsRepeatResponse.json(),
         ]);
@@ -67,7 +67,55 @@ class Booking{
         console.log(bookings);
         console.log(eventsCurrent);
         console.log(eventsRepeat);
+        thisBooking.parseData(bookings, eventsCurrent, eventsRepeat);
       });
+  }
+
+  parseData(bookings, eventsCurrent, eventsRepeat){
+    const thisBooking = this;
+
+    thisBooking.booked = {};
+
+    for(let item of bookings){
+      thisBooking.makeBooked(item.date, item.hour, item.duration, item.table);
+    }
+    
+    for(let item of eventsCurrent){
+      thisBooking.makeBooked(item.date, item.hour, item.duration, item.table);
+    }
+
+    const minDate = thisBooking.datePicker.minDate;
+    const maxDate = thisBooking.datePicker.maxDate;
+
+    for(let item of eventsRepeat){
+      if(item.repeat == 'daily'){
+        for(let loopDate = minDate; loopDate <= maxDate; loopDate = utils.addDays(loopDate,1)){
+          thisBooking.makeBooked(utils.dateToStr(loopDate), item.hour, item.duration, item.table);
+        }
+      }
+    }
+    console.log('thisBooking.booked',thisBooking.booked);
+    thisBooking.updateDOM();
+  }
+
+  makeBooked(date, hour, duration, table){
+    const thisBooking = this;
+
+    if(typeof thisBooking.booked[date] == 'undefined'){
+      thisBooking.booked[date] = {};
+    }
+
+    const startHour = utils.hourToNumber(hour);
+
+    if(typeof thisBooking.booked[date][startHour] == 'undefined'){
+      thisBooking.booked[date][startHour] = [];
+    }
+
+    thisBooking.booked[date][startHour].push(table);
+
+    for(let index = 0; index < 3; index++){
+      console.log('loop', index);
+    }
   }
 
   render(bookingConfig){
