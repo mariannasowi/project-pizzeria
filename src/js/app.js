@@ -105,6 +105,16 @@ const app = {
       });
   },
 
+  // initCarousel: function(){
+  //   $('.quote-wrapper').slick({
+
+  //     dots: true,
+  //     arrows: false,
+  //     autoplay: true,
+  //     autoplaySpeed: 3000,
+  //   });
+  // },
+
   init: function(){
     const thisApp = this;
 
@@ -112,6 +122,7 @@ const app = {
     thisApp.initData();
     thisApp.initCart();
     thisApp.initBooking();
+    //thisApp.initCarousel();
   },
 };
 
