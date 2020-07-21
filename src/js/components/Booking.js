@@ -11,7 +11,7 @@ class Booking{
     thisBooking.render(bookingConfig);
     thisBooking.initWidgets();
     thisBooking.getData();
-    //thisBooking.selectTable();
+    thisBooking.selectTable();
   }
 
   getData(){
@@ -150,10 +150,11 @@ class Booking{
     for (let table of thisBooking.dom.tables){
       table.addEventListener('click', function(){
         table.classList.add(classNames.booking.tableBooked);
+        //console.log('table add', table.classList.add);
         
         let tableSelectedId = parseInt(table.getAttribute(settings.booking.tableIdAttribute));
-        console.log('tableSelected', tableSelectedId);
-
+        //console.log('tableSelected', tableSelectedId);
+        
         thisBooking.tableSelected = tableSelectedId;
       });
     }
@@ -173,7 +174,6 @@ class Booking{
       phone: thisBooking.dom.phone.value,
       address: thisBooking.dom.address.value,
     };
-    console.log('payload', payload);
 
     for (let starter of thisBooking.dom.starters){
       if (starter.checked === true){
