@@ -105,15 +105,19 @@ const app = {
       });
   },
 
-  // initCarousel: function(){
-  //   $('.quote-wrapper').slick({
-
-  //     dots: true,
-  //     arrows: false,
-  //     autoplay: true,
-  //     autoplaySpeed: 3000,
-  //   });
-  // },
+  initCarousel: function(){
+    $(document).ready(function(){
+      $('.carousel-quotes').slick({
+        infinite: true,
+        dots: true,
+        arrows: false,
+        autoplay: true,
+        autoplaySpeed: 3000,
+        fade: true,
+        fadeSpeed: 1000
+      });
+    });
+  },
 
   init: function(){
     const thisApp = this;
@@ -122,7 +126,7 @@ const app = {
     thisApp.initData();
     thisApp.initCart();
     thisApp.initBooking();
-    //thisApp.initCarousel();
+    thisApp.initCarousel();
   },
 };
 

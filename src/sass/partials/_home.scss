@@ -1,13 +1,6 @@
 /* Global */
 
-.main-nav {
-  .order,
-  .booking {
-    display: none;
-  }
-}
-
-.home-wrapper {
+.home-wrapper{
   margin: 42px auto;
   padding: 72px 48px;
   background: $color-light;
@@ -16,29 +9,28 @@
   font-family: $font-header;
 }
 
-h4 {
+h4{
   @extend %h4;
 }
 
 /* Box order and booking */
 
-.home-order-booking {
+.home-order-booking{
   display: flex;
   justify-content: center;
-  overflow: hidden;
   color: $color-light;
+  overflow: hidden;
 
-  .home-order {
+  .home-order{
     background-image: url('../../images/pizza-1.jpg');
     margin-right: 10px;
   }
 
-  .home-booking {
+  .home-booking{
     background-image: url('../../images/pizza-2.jpg');
   }
 
-
-  .box {
+  .box{
     position: relative;
     width: 100%;
     height: 125px;
@@ -48,17 +40,17 @@ h4 {
     border-radius: $radius;
     cursor: pointer;
 
-    .inner-box {
+    .inner-box{
       width: 100%;
       height: 100%;
       position: absolute;
       top: 11%;
       transition: $transition;
 
-      &:hover {
+      &:hover{
         top: -15%;
 
-        h4 {
+        h4{
           margin-bottom: 10px;
         }
       }
@@ -68,7 +60,7 @@ h4 {
 
 /* Box opening hours */
 
-.opening-hours-box {
+.opening-hours-box{
   display: flex;
   justify-content: center;
   align-items: center;
@@ -77,108 +69,58 @@ h4 {
   border-radius: $radius;
   background-color: #fe6b6b;
   color: $color-light;
-  margin: 10px 0 60px;
+  margin: 10px 0;
 
-  h4 {
+  h4{
     margin: 0;
   }
 
-  p {
+  p{
     margin-top: 0;
     text-transform: uppercase;
     letter-spacing: 2px;
   }
 }
 
-/*Quotes */
-.quote-wrapper {
-  .quote-all {
-    display: flex;
-    margin: 30px 0 10px;
+/*Carousel */
 
-    .quote-img {
-      flex: 1;
+.carousel-wrapper{
+  margin: 100px auto;
+  height: 400px;
+  display: flex;
+  // align-items: center;
+  // justify-content: space-between;
+
+  .carousel-img{
+    img{
       width: 190px;
       height: 190px;
-      margin-right: 40px;
       border-radius: $radius;
-      background-image: url('../../images/pizza-3.jpg');
-      background-size: cover;
-      background-position: center;
-    }
 
-    .quote-text {
-      flex: 2;
-      font-family: $font-text;
-
-      p:nth-child(1) {
-        text-transform: uppercase;
-        font-weight: $font-bold;
-      }
-
-      p:nth-child(3) {
-        font-style: italic;
-      }
     }
   }
-}
-
-/* slick dots */
-
-.slick-dots {
-  display: flex;
-  justify-content: center;
-
-  margin: 0;
-  padding: 20px 0;
-
-  list-style: none;
-
-  li {
-    margin: 0 5px;
-  }
-
-  button {
-    display: block;
-    width: 14px;
-    height: 14px;
-    padding: 0;
-
-    border: none;
-    border-radius: 100%;
-    border: black;
-    background-color: grey;
-
-    text-indent: -9999px;
-  }
-
-  li.slick-active button {
-    background-color: black;
-  }
-
 }
 
 /* Gallery */
 
-.home-gallery {
-  margin-top: 40px;
+.home-gallery{
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
 
-  .gallery-img {
+  .gallery-img{
     flex-basis: 31.5%;
     position: relative;
     height: 180px;
     margin: 5px;
 
-    img {
+    img{
       width: 100%;
       height: 100%;
       object-fit: cover;
     }
 
-    &::before {
+    &::before{
       position: absolute;
       display: none;
       content: "";
@@ -190,16 +132,16 @@ h4 {
       opacity: 0.4;
     }
 
-    &:hover::before {
+    &:hover::before{
       display: block;
     }
 
-    &:hover .gallery-icons {
+    &:hover .gallery-icons{
       display: block;
     }
   }
 
-  .gallery-icons {
+  .gallery-icons{
     position: absolute;
     top: 50%;
     left: 50%;
@@ -207,11 +149,11 @@ h4 {
     display: none;
     font-size: 25px;
 
-    a {
+    a{
       color: $color-light;
       margin: 4px;
 
-      &:hover .fa-heart {
+      &:hover .fa-heart{
         color: #ff0000;
       }
     }
@@ -220,11 +162,11 @@ h4 {
 
 /* Footer */
 
-.home-footer {
+.home-footer{
   font-family: $font-text;
   margin-top: 20px;
 
-  .footer {
+  .footer{
     color: #fe6b6b;
   }
 }
