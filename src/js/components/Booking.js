@@ -132,10 +132,9 @@ class Booking{
         tableId = parseInt(tableId);
       }
 
-      if(
-        !allAvailable
+      if(!allAvailable
         &&
-        thisBooking.booked[thisBooking.date][thisBooking.hour].includes(tableId) > -1
+        thisBooking.booked[thisBooking.date][thisBooking.hour].includes(tableId)
       ){
         table.classList.add(classNames.booking.tableBooked);
       } else {
@@ -150,10 +149,8 @@ class Booking{
     for (let table of thisBooking.dom.tables){
       table.addEventListener('click', function(){
         table.classList.add(classNames.booking.tableBooked);
-        console.log('table add', table.classList.add);
         
         let tableSelectedId = parseInt(table.getAttribute(settings.booking.tableIdAttribute));
-        console.log('tableSelected', tableSelectedId);
         
         thisBooking.tableSelected = tableSelectedId;
       });
