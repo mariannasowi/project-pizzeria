@@ -16,6 +16,9 @@ const app = {
 
     thisApp.pages = document.querySelector(select.containerOf.pages).children;
     thisApp.navLinks = document.querySelectorAll(select.nav.links);
+    thisApp.orderLink = document.querySelector(select.homeLinks.order);
+    console.log('order', thisApp.orderLink);
+    thisApp.bookingLink = document.querySelector(select.homeLinks.booking);
     
     const idFromHash = window.location.hash.replace('#/', '');
 
@@ -62,6 +65,24 @@ const app = {
         link.getAttribute('href') == '#' + pageId
       );
     }
+
+    /* Order */
+    thisApp.orderLink.addEventListener('click', function(event){
+      const orderId = 'order';
+      event.preventDefault();
+
+      thisApp.activatePage(orderId);
+      window.location.hash = '/' + orderId;
+    });
+
+    /* Booking */
+    thisApp.bookingLink.addEventListener('click', function(event){
+      const bookingId = 'booking';
+      event.preventDefault();
+
+      thisApp.activatePage(bookingId);
+      window.location.hash = '/' + bookingId;
+    });
   },
 
   initMenu: function(){
@@ -105,19 +126,15 @@ const app = {
       });
   },
 
-  initCarousel: function(){
-    $(document).ready(function(){
-      $('.carousel-quotes').slick({
-        infinite: true,
-        dots: true,
-        arrows: false,
-        autoplay: true,
-        autoplaySpeed: 3000,
-        fade: true,
-        fadeSpeed: 1000
-      });
-    });
-  },
+  // initCarousel: function(){
+  //   $('.quote-wrapper').slick({
+
+  //     dots: true,
+  //     arrows: false,
+  //     autoplay: true,
+  //     autoplaySpeed: 3000,
+  //   });
+  // },
 
   init: function(){
     const thisApp = this;
@@ -126,7 +143,7 @@ const app = {
     thisApp.initData();
     thisApp.initCart();
     thisApp.initBooking();
-    thisApp.initCarousel();
+    //thisApp.initCarousel();
   },
 };
 
