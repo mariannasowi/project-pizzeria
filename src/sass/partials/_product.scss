@@ -1,26 +1,26 @@
-.product-list {
+.product-list{
   padding: ($base-size * 3) 0;
 }
 
-.product {
+.product{
   margin: ($base-size / 2) 0;
   padding: ($base-size * 6) ($base-size * 4);
   background: $color-light;
   border-bottom: 1px solid lighten($color-dark, 70%);
   border-radius: $radius;
 
-  &__header {
+  &__header{
     @include flex(row, center, space-between);
     margin-bottom: ($base-size * 2);
     cursor: pointer;
   }
 
-  &__name {
+  &__name{
     @extend .h1;
     position: relative;
   }
 
-  &__icon {
+  &__icon{
     position: absolute;
     color: $color-main;
     right: (-$base-size * 5);
@@ -29,63 +29,63 @@
     transition: $transition;
   }
 
-  &__base-price {
+  &__base-price{
     @extend .h1;
     font-weight: $font-light;
   }
 
-  &__description {
+  &__description{
     color: lighten($color-dark, 10%);
   }
 
-  &__wrapper {
+  &__wrapper{
     @include flex(row, center, space-between);
     @include accordion-closed();
     animation: flipdown 0.5s ease both;
   }
 
-  &__params {
+  &__params{
     margin: 0 0 ($base-size * 3) 0;
     padding: 0;
     list-style-type: none;
   }
 
-  &__params-title {
+  &__params-title{
     @extend .h1;
     margin: ($base-size * 2) 0;
   }
 
-  &__order {
+  &__order{
     width: calc(100% - 400px);
     opacity: 0;
     transition: opacity 200ms;
   }
 
-  &__total-price {
+  &__total-price{
     font-size: 14px;
     font-weight: $font-bold;
     text-transform: uppercase;
   }
 
-  &__images {
+  &__images{
     position: relative;
     width: 350px;
     height: 350px;
     opacity: 0;
     transition: opacity 200ms;
 
-    &.small {
+    &.small{
       width: 220px;
       height: 220px;
     }
 
-    > img {
+    > img{
       @include center();
       height: auto;
       opacity: 0;
       transition: opacity 500ms;
 
-      &.active {
+      &.active{
         opacity: 1;
       }
 
@@ -93,8 +93,8 @@
 
   }
 
-  &.active {
-    .product__wrapper {
+  &.active{
+    .product__wrapper{
       @include accordion-open();
     }
 
@@ -102,7 +102,7 @@
       opacity: 1;
     }
 
-    .product__icon {
+    .product__icon{
       transform: rotate(180deg);
     }
 
@@ -110,8 +110,8 @@
 
 }
 
-.widget-amount {
-  input {
+.widget-amount{
+  input{
     width: 30px;
     height: 30px;
     text-align: center;

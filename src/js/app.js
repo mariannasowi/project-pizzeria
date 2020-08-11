@@ -17,7 +17,6 @@ const app = {
     thisApp.pages = document.querySelector(select.containerOf.pages).children;
     thisApp.navLinks = document.querySelectorAll(select.nav.links);
     thisApp.orderLink = document.querySelector(select.homeLinks.order);
-    console.log('order', thisApp.orderLink);
     thisApp.bookingLink = document.querySelector(select.homeLinks.booking);
     
     const idFromHash = window.location.hash.replace('#/', '');
@@ -66,7 +65,7 @@ const app = {
       );
     }
 
-    /* Order */
+    /* order */
     thisApp.orderLink.addEventListener('click', function(event){
       const orderId = 'order';
       event.preventDefault();
@@ -75,7 +74,7 @@ const app = {
       window.location.hash = '/' + orderId;
     });
 
-    /* Booking */
+    /* booking */
     thisApp.bookingLink.addEventListener('click', function(event){
       const bookingId = 'booking';
       event.preventDefault();
@@ -117,6 +116,7 @@ const app = {
         return rawResponse.json();
       })
       .then(function(parsedResponse){
+        console.log('parsedResponse', parsedResponse);
 
         /* save parsedResponse as thisApp.data.products */
         thisApp.data.products = parsedResponse;
@@ -126,15 +126,49 @@ const app = {
       });
   },
 
-  // initCarousel: function(){
-  //   $('.quote-wrapper').slick({
+  initCarousel() {
+    const carouselArray = [];
 
-  //     dots: true,
-  //     arrows: false,
-  //     autoplay: true,
-  //     autoplaySpeed: 3000,
-  //   });
-  // },
+    carouselArray[0] = {
+      title: 'Amaizing service!', text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', author: '~ Margaret Osborne',
+    };
+    carouselArray[1] = {
+      title: 'Perfect!', text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', author: '~ Scarlett  Johansson',
+    };
+    carouselArray[2] = {
+      title: 'Delicious!', text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.', author: '~ Johnny Cash',
+    };
+
+    let i = 0;
+    const dots = document.querySelectorAll('.carousel-dots i');
+    function changeSlide() {
+      const title = document.querySelector('.review-title');
+      const text = document.querySelector('.review-text');
+      const name = document.querySelector('.review-author');
+
+      for (let dot of dots) {
+        if (dot.id == 'dot-'+ (i + 1)) {
+          dot.classList.add('active');
+        } else {
+          dot.classList.remove('active');
+        }
+        title.innerHTML = carouselArray[i].title;
+        text.innerHTML = carouselArray[i].text;
+        name.innerHTML = carouselArray[i].author;
+      }
+
+      if (i < carouselArray.length - 1) {
+        i++;
+      } else {
+        i = 0;
+      }
+    }
+    changeSlide();
+
+    setInterval(() => {
+      changeSlide();
+    }, 3000);
+  },
 
   init: function(){
     const thisApp = this;
@@ -143,7 +177,7 @@ const app = {
     thisApp.initData();
     thisApp.initCart();
     thisApp.initBooking();
-    //thisApp.initCarousel();
+    thisApp.initCarousel();
   },
 };
 
