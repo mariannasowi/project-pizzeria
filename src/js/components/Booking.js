@@ -141,6 +141,7 @@ class Booking{
         table.classList.remove(classNames.booking.tableBooked);
       }
     }
+    thisBooking.rangeSliderColor();
   }
 
   selectTable(){
@@ -221,6 +222,33 @@ class Booking{
     thisBooking.dom.address = thisBooking.dom.wrapper.querySelector(select.booking.bookingAddress);
     thisBooking.dom.starters = thisBooking.dom.wrapper.querySelectorAll(select.booking.starters);
     thisBooking.dom.form = thisBooking.dom.wrapper.querySelector(select.booking.bookingForm);
+  }
+
+  rangeSliderColor(){
+    const thisBooking = this;
+    const rangeSlider = document.querySelector('.rangeSlider');
+    let percentage = 0;
+    const colorGrad = [];
+    for (let i = 12; i < 24; i += 0.5){
+      percentage += 100 / 24;
+      if ((typeof thisBooking.booked[thisBooking.datePicker.value][i] == 'undefined') || thisBooking.booked[thisBooking.datePicker.value][i].length == 1){
+        let color = `green ${percentage}%`;
+        colorGrad.push(color);
+        console.log('thisBooking.booked[thisBooking.datePicker.value][i]', thisBooking.booked[thisBooking.datePicker.value][i]);
+
+      } else if (thisBooking.booked[thisBooking.datePicker.value][i].length == 2){
+        let color = `orange ${percentage}%`;
+        colorGrad.push(color);
+        console.log('thisBooking.booked[thisBooking.datePicker.value][i]', thisBooking.booked[thisBooking.datePicker.value][i]);
+      } else {
+        let color = `red ${percentage}%`;
+        colorGrad.push(color);
+        console.log('thisBooking.booked[thisBooking.datePicker.value][i]', thisBooking.booked[thisBooking.datePicker.value][i]);
+      }
+    }
+    const linearGrad = colorGrad.join();
+    const gradient = `linear-gradient(to right, ${linearGrad})`;
+    rangeSlider.style.backgroundImage = gradient;
   }
 
   initWidgets(){

@@ -74,9 +74,9 @@
     }
 
     &__horizontal {
-      width: ($base-size * 2);
-      height: ($base-size * 2);
-      top: -6px;
+      width: ($base-size * 1.67);
+      height: ($base-size * 1.67);
+      top: -5px;
       background: $color-dark;
     }
 
