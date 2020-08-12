@@ -62,6 +62,7 @@ class Booking{
       })
       .then(function([bookings, eventsCurrent, eventsRepeat]){
         thisBooking.parseData(bookings, eventsCurrent, eventsRepeat);
+        thisBooking.rangeSliderColor();
       });
   }
 
@@ -141,7 +142,6 @@ class Booking{
         table.classList.remove(classNames.booking.tableBooked);
       }
     }
-    thisBooking.rangeSliderColor();
   }
 
   selectTable(){
@@ -190,8 +190,7 @@ class Booking{
     fetch(url, options)
       .then(function (response){
         return response.json();
-      }).then(function (parsedResponse){
-        console.log('parsedResponse', parsedResponse);
+      }).then(function (){
         thisBooking.getData();
       });
   }
@@ -241,7 +240,6 @@ class Booking{
         let color = `red ${percentage}%`;
         colorGrad.push(color);
       }
-      console.log('thisBooksing.booked[thisBooking.datePicker.value][i]', thisBooking.booked[thisBooking.datePicker.value][i]);
     }
     
     const linearGrad = colorGrad.join();
